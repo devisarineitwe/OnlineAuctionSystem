@@ -1,0 +1,116 @@
+.product-row{
+    background-color: aquamarine;
+    justify-content: space-around;
+    display:flex;
+}
+.product-card{
+    height:50%;
+}
+
+/* Define the color variables */
+:root {
+    --white: #ffffff;
+    --deep-blue: #003366;
+    --dark-yellow: #ffcc00;
+}
+
+/* Style the body element */
+body {
+    font-family: Arial;
+    background-color: var(--white);
+}
+
+/* Style the product item element */
+.product-item {
+    float: left;
+    margin: 10px;
+    padding: 10px;
+    border: 1px solid var(--deep-blue);    
+}
+
+/* Style the product image element */
+.product-image {
+    height: 0%;
+    width: 100%;
+    object-fit: cover; /* This property will crop the image to fit the container */
+}
+
+/* Style the product tile footer element */
+.product-tile-footer {
+    margin: 15px 0;
+}
+
+/* Style the product title element */
+.product-title {
+    font-weight: bold;
+    color: var(--deep-blue);
+}
+
+/* Style the product price element */
+.product-price {
+    color: var(--dark-yellow);
+}
+
+/* Style the product description element */
+.product-description {
+    color: var(--deep-blue);
+}
+
+/* Style the bid form element */
+.bid-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Style the bid form label element */
+.bid-form label {
+    margin: 5px;
+    color: var(--deep-blue);
+}
+
+/* Style the bid form input element */
+.bid-form input {
+    margin: 5px;
+    width: 100px;
+}
+
+/* Style the bid form submit button element */
+.bid-form input[type=submit] {
+    background-color: var(--dark-yellow);
+    color: var(--white);
+    border: none;
+    cursor: pointer;
+}
+
+/* Style the bid history table element */
+.bid-history {
+    margin: 10px;
+    border-collapse: collapse;
+    width: 80%;
+}
+
+/* Style the bid history table head element */
+.bid-history thead {
+    background-color: var(--deep-blue);
+    color: var(--white);
+}
+
+/* Style the bid history table head cell element */
+.bid-history th {
+    padding: 10px;
+    border: 1px solid var(--white);
+}
+
+/* Style the bid history table body element */
+.bid-history tbody {
+    background-color: var(--white);
+}
+
+/* Style the bid history table body cell element */
+.bid-history td {
+    padding: 10px;
+    border: 1px solid var(--deep-blue);
+    color: var(--deep-blue);
+}
+
