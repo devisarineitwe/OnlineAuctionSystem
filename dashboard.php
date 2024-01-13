@@ -112,7 +112,7 @@ $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                     <p class='card-text'>Auction Start Date: $auction_start_date</p>
                                     <p class='card-text'>Auction End Date: $auction_end_date</p>
                                     <p class='card-text'>Seller ID: $seller_id</p>
-                                    <a href='products.php?id=$product_id' class='btn btn-primary'>Bid Now</a>
+                                    <a href='products.php?id=$product_id' class='btn btn-primary'>View Details</a>
                                 </div>
                             </div>
                         </div>
@@ -122,7 +122,7 @@ $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     ?>
                 </div>
                 <!-- Display a link to view more products -->
-                <a href="#" class="btn btn-secondary">View product chart Products</a>                
+                <a href="upload_product.php" class="btn btn-secondary">New Product</a>                
             </div>
         </div>
     </div>

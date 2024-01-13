@@ -176,6 +176,9 @@ $productMessages = fetchMessages($pdo, $product_id)
                         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#chatModal">
                             Open Product Chat
                         </button>
+                        <!-- Add this button where you want it, for example, in your product listing page -->
+                        <a href="edit_product.php?product_id=<?php echo $product['ProductID']; ?>" class="btn btn-primary">Edit Product</a>
+
                         </div>
                     </div>
                 </div>
