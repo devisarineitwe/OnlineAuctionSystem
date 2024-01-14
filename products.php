@@ -1,4 +1,6 @@
 <?php
+// checking sessions
+include_once "includes/sessions.php";
 
 // Define your database parameters
 $host = "localhost"; // The name of the host where the database is located

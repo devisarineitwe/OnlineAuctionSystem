@@ -1,4 +1,5 @@
 <?php
+include_once "includes/sessions.php";
 $mysqli = new mysqli("localhost", "root", "", "online_auction_kab");
 
 if ($mysqli->connect_error) {
@@ -169,7 +170,7 @@ $mysqli->close();
                             <a class="nav-link" href="#">Profile</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Logout</a>
+                            <a class="nav-link" href="user_authentication.php?action=logout">Logout</a>
                         </li>
                     </ul>
                 </div>

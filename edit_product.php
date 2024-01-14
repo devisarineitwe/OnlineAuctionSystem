@@ -1,7 +1,6 @@
 <?php
 include 'includes/navbar.php';
-session_start();
-
+include_once "includes/sessions.php";
 // Define your database parameters
 $host = "localhost";
 $dbname = "online_auction_kab";

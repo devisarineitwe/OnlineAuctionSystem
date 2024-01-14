@@ -83,11 +83,11 @@ $products = fetchProductsFromDatabase($conn);
     </div>
 
     <div class="text-center mt-4">
-        <?php if (isset($_SESSION['user_id'])) : ?>
+        <?php if (isset($_SESSION['user_id'])){?>
             <!-- If the user is logged in, show a link to view more products -->
-            <a href="dashboard.php" class="btn btn-primary">View More Products</a>
+            <a href="dashboard.php" class="btn btn-primary">Go to dashboard</a>
             <a href="user_authentication.php?action=logout" class="btn btn-danger">Logout</a>
-        <?php else : ?>
+        <?php }else {?>
             <!-- If the user is not logged in, show a button to prompt login -->
             <button type="button" class="btn btn-success" data-toggle="modal" data-target="#loginModal">
                 Log In to View More
@@ -96,7 +96,7 @@ $products = fetchProductsFromDatabase($conn);
             <button type="button" class="btn btn-info" data-toggle="modal" data-target="#registerModal">
                 Register
             </button>
-        <?php endif; ?>
+        <?php } ?>
     </div>
 
     <!-- Login/Signup Modal -->
