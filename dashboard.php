@@ -1,33 +1,42 @@
 <?php
+$mysqli = new mysqli("localhost", "root", "", "online_auction_kab");
 
-// Define your database parameters
-$host = "localhost"; // The name of the host where the database is located
-$dbname = "online_auction_kab"; // The name of the database
-$username = "root"; // The username for accessing the database
-$password = ""; // The password for accessing the database
-
-// Create a PDO object and connect to the database
-try {
-    $pdo = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);
-    // Set the PDO error mode to exception
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    echo "Connected successfully";
-} catch(PDOException $e) {
-    echo "Connection failed: " . $e->getMessage();
+if ($mysqli->connect_error) {
+    die("Connection failed: " . $mysqli->connect_error);
 }
 
+// Auctions count
+$result = $mysqli->query("SELECT COUNT(*) AS auctions_count FROM auctions");
+$row = $result->fetch_assoc();
+$auctions_count = $row["auctions_count"];
 
-// Prepare a SQL statement to select all products from the Products table
-$sql = "SELECT * FROM Products";
-$stmt = $pdo->prepare($sql);
+// Bids count
+$result = $mysqli->query("SELECT COUNT(*) AS bids_count FROM bids");
+$row = $result->fetch_assoc();
+$bids_count = $row["bids_count"];
 
-// Execute the SQL statement
-$stmt->execute();
+// Messages count
+$result = $mysqli->query("SELECT COUNT(*) AS messages_count FROM messages");
+$row = $result->fetch_assoc();
+$messages_count = $row["messages_count"];
 
-// Fetch the data as an associative array
-$products = $stmt->fetchAll(PDO::FETCH_ASSOC);
+// Products count
+$result = $mysqli->query("SELECT COUNT(*) AS products_count FROM products");
+$row = $result->fetch_assoc();
+$products_count = $row["products_count"];
 
+// Transactions count
+$result = $mysqli->query("SELECT COUNT(*) AS transactions_count FROM transactions");
+$row = $result->fetch_assoc();
+$transactions_count = $row["transactions_count"];
 
+// Users count
+$result = $mysqli->query("SELECT COUNT(*) AS users_count FROM users");
+$row = $result->fetch_assoc();
+$users_count = $row["users_count"];
+
+// Close the database connection
+$mysqli->close();
 ?>
 
 <!DOCTYPE html>
@@ -36,17 +45,107 @@ $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Auction Dashboard</title>
-    <!-- Include Bootstrap 5 CSS file from CDN -->
-    <link rel="stylesheet" href="styles/style.css">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/css/bootstrap.min.css">
+    <!-- Bootstrap CDN -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!-- Font Awesome CDN -->
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+    <!-- Custom CSS -->
+    <style>
+        /* Navbar */
+        .navbar {
+            background-color: #003366;
+        }
+
+        .navbar-brand {
+            color: white;
+        }
+
+        .nav-link {
+            color: white;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 250px;
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
+            background-color: #f0f0f0;
+            border-right: 1px solid #ccc;
+        }
+
+        .sidebar-icon {
+            font-size: 30px;
+            color: #003366;
+            margin: 10px;
+        }
+
+        .sidebar-link {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            color: #003366;
+            text-decoration: none;
+        }
+
+        .sidebar-link:hover {
+            background-color: #e6e6e6;
+        }
+
+        /* Main content */
+        .main-content {
+            margin-left: 250px;
+            padding: 20px;
+        }
+
+        .card {
+            margin:20px;
+            border: none;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .card-header {
+            background-color: #ffcc00;
+            color: #003366;
+            font-weight: bold;
+        }
+
+        .card-body {
+            background-color: white;
+        }
+
+        .card-footer {
+            background-color: #e6e6e6;
+        }
+
+        /* Chart */
+        .chart {
+            width: 100%;
+            height: 300px;
+        }
+
+        /* Media queries */
+        @media (max-width: 768px) {
+            /* Hide sidebar */
+            .sidebar {
+                display: none;
+            }
+
+            /* Adjust main content margin */
+            .main-content {
+                margin-left: 0;
+            }
+        }
+    </style>
 </head>
 <body>
-    <div class="container-fluid">
-        <!-- Create a top navigation bar -->
-        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+        <div class="container">
             <div class="container">
                 <a class="navbar-brand" href="#">Auction Dashboard</a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarNav">
@@ -61,74 +160,183 @@ $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
                             <a class="nav-link" href="#">Bids</a>
                         </li>
                         <li class="nav-item">
+                            <a class="nav-link" href="#">Messages</a>
+                        </li>
+                        <li class="nav-item">
                             <a class="nav-link" href="#">Transactions</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Users</a>
+                            <a class="nav-link" href="#">Profile</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Logout</a>
                         </li>
                     </ul>
                 </div>
             </div>
         </nav>
-        <!-- Create a main content area -->
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <a class="sidebar-link" href="#">
+                <i class="fas fa-home sidebar-icon"></i>
+                <span>Home</span>
+            </a>
+            
+        </div>
+        <!-- Sidebar and Main content -->
+    <div class="container-fluid">
         <div class="row">
-            <!-- Create a side navigation bar -->
+            <!-- Sidebar -->
             <div class="col-md-3">
-                <div class="list-group">
-                    <a href="#" class="list-group-item list-group-item-action active">Dashboard</a>
-                    <a href="#" class="list-group-item list-group-item-action">Products</a>
-                    <a href="#" class="list-group-item list-group-item-action">Bids</a>
-                    <a href="#" class="list-group-item list-group-item-action">Transactions</a>
-                    <a href="#" class="list-group-item list-group-item-action">Users</a>
+                <div class="sidebar">
+                    <a class="sidebar-link" href="index.php">
+                        <i class="fas fa-home sidebar-icon"></i>
+                        <span>Home</span>
+                    </a>
+                    <a class="sidebar-link" href="products.php">
+                        <i class="fas fa-shopping-cart sidebar-icon"></i>
+                        <span>Products</span>
+                    </a>
+                    <a class="sidebar-link" href="#">
+                        <i class="fas fa-gavel sidebar-icon"></i>
+                        <span>Bids</span>
+                    </a>
+                    <a class="sidebar-link" href="#">
+                        <i class="fas fa-envelope sidebar-icon"></i>
+                        <span>Messages</span>
+                    </a>
+                    <a class="sidebar-link" href="#">
+                        <i class="fas fa-dollar-sign sidebar-icon"></i>
+                        <span>Transactions</span>
+                    </a>
+                    <a class="sidebar-link" href="#">
+                        <i class="fas fa-user sidebar-icon"></i>
+                        <span>Profile</span>
+                    </a>
+                    <a class="sidebar-link" href="#">
+                        <i class="fas fa-sign-out-alt sidebar-icon"></i>
+                        <span>Logout</span>
+                    </a>
                 </div>
             </div>
-            <!-- Create a main content area -->
-            <div class="col-md-9">
-                <h1>Dashboard</h1>
-                <!-- Display the data from the Products table using Bootstrap cards -->
-                <div class="row">
-                    <?php
-                    // Loop through the products array and display each product as a card
-                    foreach ($products as $product) {
-                        // Extract the product data
-                        $product_id = $product['ProductID'];
-                        $product_name = $product['ProductName'];
-                        $description = $product['Description'];
-                        $image_url = $product['ImageURL'];
-                        $starting_price = $product['StartingPrice'];
-                        $auction_start_date = $product['AuctionStartDate'];
-                        $auction_end_date = $product['AuctionEndDate'];
-                        $seller_id = $product['SellerID'];
-
-                        // Create a card for each product
-                        echo "
-                        <div class='col-md-3'>
-                            <div class='card'>
-                                <img src='$image_url' class='card-img-top' alt='$product_name'>
-                                <div class='card-body'>
-                                    <h5 class='card-title'>$product_name</h5>
-                                    <p class='card-text'>$description</p>
-                                    <p class='card-text'>Starting Price: $starting_price</p>
-                                    <p class='card-text'>Auction Start Date: $auction_start_date</p>
-                                    <p class='card-text'>Auction End Date: $auction_end_date</p>
-                                    <p class='card-text'>Seller ID: $seller_id</p>
-                                    <a href='products.php?id=$product_id' class='btn btn-primary'>View Details</a>
+        <!-- Main content -->
+        <div class="col-md-9 main-content">
+                <div class="container">
+                    <div class="row">
+                        <!-- Card 1 -->
+                        <div class="col-md-6 col-lg-4">
+                            <div class="card">
+                                <div class="card-header">
+                                    Total Products
+                                </div>
+                                <div class="card-body">
+                                    <h1 class="text-center"><?php echo $products_count?></h1>
+                                </div>
+                                <div class="card-footer">
+                                    <a href="products.php">View Details</a>
                                 </div>
                             </div>
                         </div>
-                        ";
-                        
-                    }
-                    ?>
+                        <!-- Card 2 -->
+                        <div class="col-md-6 col-lg-4">
+                            <div class="card">
+                                <div class="card-header">
+                                    Total Bids
+                                </div>
+                                <div class="card-body">
+                                    <h1 class="text-center"><?php echo $bids_count?></h1>
+                                </div>
+                                <div class="card-footer">
+                                    <a href="#">View Details</a>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Card 3 -->
+                        <div class="col-md-6 col-lg-4">
+                            <div class="card">
+                                <div class="card-header">
+                                    Total Messages
+                                </div>
+                                <div class="card-body">
+                                    <h1 class="text-center"><?php echo $messages_count?></h1>
+                                </div>
+                                <div class="card-footer">
+                                    <a href="#">View Details</a>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Card 4 -->
+                        <div class="col-md-6 col-lg-4">
+                            <div class="card">
+                                <div class="card-header">
+                                    Total Transactions
+                                </div>
+                                <div class="card-body">
+                                    <h1 class="text-center"><?php echo $transactions_count?></h1>
+                                </div>
+                                <div class="card-footer">
+                                    <a href="#">View Details</a>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Card 5 -->
+                        <div class="col-md-6 col-lg-4">
+                            <div class="card">
+                                <div class="card-header">
+                                    Total Revenue
+                                </div>
+                                <div class="card-body">
+                                    <h1 class="text-center">$10,000</h1>
+                                </div>
+                                <div class="card-footer">
+                                    <a href="#">View Details</a>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Card 6 -->
+                        <div class="col-md-6 col-lg-4">
+                            <div class="card">
+                                <div class="card-header">
+                                    Total Users
+                                </div>
+                                <div class="card-body">
+                                    <h1 class="text-center"><?php echo $users_count?></h1>
+                                </div>
+                                <div class="card-footer">
+                                    <a href="#">View Details</a>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Chart 1 -->
+                        <div class="col-md-12 col-lg-6">
+                            <div class="card">
+                                <div class="card-header">
+                                    Products by Category
+                                </div>
+                                <div class="card-body">
+                                    <div id="chart1" class="chart"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Chart 2 -->
+                        <div class="col-md-12 col-lg-6">
+                            <div class="card">
+                                <div class="card-header">
+                                    Bids by Time
+                                </div>
+                                <div class="card-body">
+                                    <div id="chart2" class="chart"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <!-- Display a link to view more products -->
-                <a href="upload_product.php" class="btn btn-secondary">New Product</a>                
             </div>
         </div>
     </div>
-    <!-- Include Bootstrap 5 JS and Popper.js files from CDN -->
+    <!-- Bootstrap CDN -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/js/bootstrap.bundle.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <!-- Google Charts-->
 </body>
 </html>
-
