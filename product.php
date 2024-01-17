@@ -32,7 +32,7 @@ function fetchMessages($pdo, $productID)
 }
 
 // Check if the user has submitted a bid
-if (isset($_POST['submit'])) {
+if (isset($_POST['place-bid'])) {
     // Get the user id and the bid amount from the form
     $user_id = $_POST['user_id'];
     $bid_amount = $_POST['bid_amount'];
@@ -195,7 +195,7 @@ $productMessages = fetchMessages($pdo, $product_id)
                             <input type='text' id='user_id' name='user_id' required>
                             <label for='bid_amount'>Bid Amount:</label>
                             <input type='number' id='bid_amount' name='bid_amount' min='0' step='0.01' required>
-                            <input type='submit' name='submit' value='Place Bid'>
+                            <input type='submit' name='place-bid' value='Place Bid'>
                         </div>
                     </form>
                 </div>
