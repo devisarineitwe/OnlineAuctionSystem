@@ -8,6 +8,9 @@ $dbname = "online_auction_kab";
 $username = "root";
 $password = "";
 
+
+// defining the owner of the product
+$room_owner = True;
 // Create a PDO object and connect to the database
 try {
     $pdo = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);
@@ -20,6 +23,36 @@ try {
 
 // Get the product id from the URL
 $product_id = $_GET['id'];
+
+// Prepare a SQL statement to select the product data from the Products table
+$sql = "SELECT * FROM Products WHERE ProductID = :product_id";
+$stmt = $pdo->prepare($sql);
+
+// Bind the parameter and execute the SQL statement
+$stmt->bindParam(':product_id', $product_id);
+$stmt->execute();
+
+// Fetch the product data as an associative array
+$product = $stmt->fetch(PDO::FETCH_ASSOC);
+
+// Extract the product data
+$product_name = $product['ProductName'];
+$description = $product['Description'];
+$image_url = $product['ImageURL'];
+$starting_price = $product['StartingPrice'];
+$current_bid = $product['CurrentBid'];
+$owner_user_id = $product['SellerID'];
+// Validate user ownership
+if ($_SESSION['user_id'] !== $owner_user_id) {
+    // Redirect or display an error message since the logged-in user is not the owner
+    $room_owner = False;
+}
+
+
+
+// extract product fetchMessages
+$productMessages = fetchMessages($pdo, $product_id);
+
 
 // Fetch messages related to each product
 function fetchMessages($pdo, $productID)
@@ -105,27 +138,6 @@ if (isset($_SESSION['user_id'])) {
     header("Location: index.php");
 }
 
-// Prepare a SQL statement to select the product data from the Products table
-$sql = "SELECT * FROM Products WHERE ProductID = :product_id";
-$stmt = $pdo->prepare($sql);
-
-// Bind the parameter and execute the SQL statement
-$stmt->bindParam(':product_id', $product_id);
-$stmt->execute();
-
-// Fetch the product data as an associative array
-$product = $stmt->fetch(PDO::FETCH_ASSOC);
-
-// Extract the product data
-$product_name = $product['ProductName'];
-$description = $product['Description'];
-$image_url = $product['ImageURL'];
-$starting_price = $product['StartingPrice'];
-$current_bid = $product['CurrentBid'];
-
-
-// extract product fetchMessages
-$productMessages = fetchMessages($pdo, $product_id)
 
 ?>
 
@@ -177,15 +189,19 @@ $productMessages = fetchMessages($pdo, $product_id)
                             Open Product Chat
                         </button>
                         <!-- Add this button where you want it, for example, in your product listing page -->
+                        <?php
+                        if($room_owner){?>
                         <a href="edit_product.php?product_id=<?php echo $product['ProductID']; ?>" class="btn btn-primary">Edit Product</a>
-
+                        <?php }?>
                         </div>
                     </div>
                 </div>
             </div>
 
             <!-- Bid history and bidding form -->
+            
             <div class="row">
+                <?php if(!$room_owner){?>
                 <div class="col-md-4">
                     <h5>Bid Product</h5>
                     <!-- Display bidding form -->
@@ -199,6 +215,7 @@ $productMessages = fetchMessages($pdo, $product_id)
                         </div>
                     </form>
                 </div>
+                <?php }?>
                 <div class="col-md-8">
                     <h5>Bid history</h5>
                     <!-- Display bid history -->
