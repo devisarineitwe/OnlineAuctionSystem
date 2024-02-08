@@ -64,6 +64,27 @@ function fetchMessages($pdo, $productID)
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 
+// Get the username of the logged-in user
+$logged_in_user = "";
+try {
+    // Get the username of the logged-in user
+    if (isset($_SESSION['user_id'])) {
+        $user_id = $_SESSION['user_id'];
+        $sql = "SELECT Username FROM users WHERE UserID = ?";
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute([$user_id]);
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if ($result) {
+            $logged_in_user = $result['Username'];
+            echo "Logged in as: " . $logged_in_user;
+        } else {
+            echo "User not found.";
+        }
+    }
+} catch (PDOException $e) {
+    echo "Error: " . $e->getMessage();
+}
 // Check if the user has submitted a bid
 if (isset($_POST['place-bid'])) {
     // Get the user id and the bid amount from the form
@@ -72,32 +93,48 @@ if (isset($_POST['place-bid'])) {
 
     // Validate the bid amount
     if ($bid_amount > 0) {
-        // Prepare a SQL statement to insert the bid data into the Bids table
-        $sql = "INSERT INTO Bids (ProductID, UserID, BidAmount) VALUES (:product_id, :user_id, :bid_amount)";
-        $stmt = $pdo->prepare($sql);
+        try {
+            // Insert bid data into the Bids table
+            $insertSql = "INSERT INTO Bids (ProductID, UserID, BidAmount) VALUES (:product_id, :user_id, :bid_amount)";
+            $insertStmt = $pdo->prepare($insertSql);
+            $insertStmt->bindParam(':product_id', $product_id);
+            $insertStmt->bindParam(':user_id', $user_id);
+            $insertStmt->bindParam(':bid_amount', $bid_amount);
+            $insertStmt->execute();
 
-        // Bind the parameters and execute the SQL statement
-        $stmt->bindParam(':product_id', $product_id);
-        $stmt->bindParam(':user_id', $user_id);
-        $stmt->bindParam(':bid_amount', $bid_amount);
-        $stmt->execute();
+            // Update the CurrentBid column in the Products table
+            $updateSql = "UPDATE Products SET CurrentBid = :bid_amount WHERE ProductID = :product_id";
+            $updateStmt = $pdo->prepare($updateSql);
+            $updateStmt->bindParam(':bid_amount', $bid_amount);
+            $updateStmt->bindParam(':product_id', $product_id);
+            $updateStmt->execute();
 
-        // Prepare a SQL statement to update the CurrentBid column in the Products table
-        $sql = "UPDATE Products SET CurrentBid = :bid_amount WHERE ProductID = :product_id";
-        $stmt = $pdo->prepare($sql);
-
-        // Bind the parameters and execute the SQL statement
-        $stmt->bindParam(':bid_amount', $bid_amount);
-        $stmt->bindParam(':product_id', $product_id);
-        $stmt->execute();
-
-        // Display a success message
-        echo "<p>Your bid has been placed successfully.</p>";
+            // Display a success message
+            echo "<p>Your bid has been placed successfully.</p>";
+        } catch (PDOException $e) {
+            echo "Error: " . $e->getMessage();
+        }
     } else {
         // Display an error message
         echo "<p>Please enter a valid bid amount.</p>";
     }
 }
+
+
+// Fetch bid history
+try {
+    $bidHistorySql = "SELECT u.Username, b.BidAmount, b.BidTime FROM Bids b
+                      JOIN users u ON b.UserID = u.UserID
+                      WHERE b.ProductID = :product_id
+                      ORDER BY b.BidTime DESC";
+    $bidHistoryStmt = $pdo->prepare($bidHistorySql);
+    $bidHistoryStmt->bindParam(':product_id', $product_id, PDO::PARAM_INT);
+    $bidHistoryStmt->execute();
+    $bidHistory = $bidHistoryStmt->fetchAll(PDO::FETCH_ASSOC);
+} catch (PDOException $e) {
+    echo "Error fetching bid history: " . $e->getMessage();
+}
+
 
 // posting a product message
 if (isset($_SESSION['user_id'])) {
@@ -201,44 +238,66 @@ if (isset($_SESSION['user_id'])) {
             <!-- Bid history and bidding form -->
             
             <div class="row">
-                <?php if(!$room_owner){?>
-                <div class="col-md-4">
-                    <h5>Bid Product</h5>
-                    <!-- Display bidding form -->
-                    <form method='post' action='product.php?id=<?php echo $product_id; ?>'>
-                        <div class='bid-form'>
-                            <label for='user_id'>User ID:</label>
-                            <input type='text' id='user_id' name='user_id' required>
-                            <label for='bid_amount'>Bid Amount:</label>
-                            <input type='number' id='bid_amount' name='bid_amount' min='0' step='0.01' required>
-                            <input type='submit' name='place-bid' value='Place Bid'>
-                        </div>
-                    </form>
-                </div>
-                <?php }?>
-                <div class="col-md-8">
-                    <h5>Bid history</h5>
-                    <!-- Display bid history -->
-                    <!-- ... (rest of your bid history display code) -->
+                <?php if (!$room_owner) : ?>
+                    <div class="col-md-4">
+                        <h5 class="mb-4">Bid Product</h5>
+                        <!-- Display bidding form -->
+                        <form method='post' action='product.php?id=<?php echo $product_id; ?>' class='border p-3'>
+                            <div class='mb-3'>
+                                <label for='user_id' class='form-label'>User: <?php echo $logged_in_user; ?>:</label>
+                                <input type='text' id='user_id' name='user_id' value='<?php echo $_SESSION["user_id"]; ?>' class='form-control' required readonly>
+                            </div>
+                            <div class='mb-3'>
+                                <label for='bid_amount' class='form-label'>Bid Amount:</label>
+                                <input type='number' id='bid_amount' name='bid_amount' min='0' step='0.01' class='form-control' required>
+                            </div>
+                            <button type='submit' name='place-bid' class='btn btn-primary'>Place Bid</button>
+                        </form>
+                    </div>
+                <?php endif; ?>
+
+                <!-- Display bid history -->
+                <div class="col-md-8 border p-3">
+                    <h5 class="mb-4">Bid History</h5>
+
+                    <?php if (!empty($bidHistory)) : ?>
+                        <ul class="list-group">
+                            <?php foreach ($bidHistory as $bid) : ?>
+                                <li class="list-group-item">
+                                    <strong><?php echo $bid['Username']; ?></strong> placed a bid of
+                                    <span class="badge bg-primary"><?php echo $bid['BidAmount']; ?></span>
+                                    at <?php echo $bid['BidTime']; ?>
+                                </li>
+                            <?php endforeach; ?>
+                        </ul>
+                    <?php else : ?>
+                        <p>No bid history available.</p>
+                    <?php endif; ?>
                 </div>
             </div>
         </div>
     </div>
 </div>
 <!-- Chat Modal -->
-<div class="modal" id="chatModal" tabindex="-1" role="dialog">
-    <div class="modal-dialog" role="document">
+<div class="modal fade" id="chatModal" tabindex="-1" role="dialog" aria-labelledby="chatModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Chat for <?php echo $product_name; ?></h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+                <h5 class="modal-title" id="chatModalLabel">Chat for <?php echo $product_name; ?></h5>
+                <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <!-- Display existing messages -->
                 <?php foreach ($productMessages as $message) : ?>
-                    <p><?php echo $message['MessageText']; ?></p>
+                    <?php
+                    $isOwnerMessage = ($message['SenderID'] == $owner_user_id);
+                    $messageClass = $isOwnerMessage ? 'owner-message' : 'user-message';
+                    $emoji = $isOwnerMessage ? '❤️' : '';
+                    ?>
+                    <div class="message <?php echo $messageClass; ?>">
+                        <span class="emoji"><?php echo $emoji; ?></span>
+                        <p><?php echo $message['MessageText']; ?></p>
+                    </div>
                 <?php endforeach; ?>
             </div>
             <div class="modal-footer">
@@ -251,11 +310,11 @@ if (isset($_SESSION['user_id'])) {
                     </div>
                     <button type="submit" name="post_message" class="btn btn-primary">Post Message</button>
                 </form>
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
             </div>
         </div>
     </div>
 </div>
+
 
 <!-- Include Bootstrap 5 JS and Popper.js files from CDN -->
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>

@@ -114,3 +114,22 @@ body {
     color: var(--deep-blue);
 }
 
+.message {
+    padding: 10px;
+    border: 1px solid #ccc;
+    margin-bottom: 10px;
+}
+
+.owner-message {
+    text-align: left;
+}
+
+.user-message {
+    text-align: right;
+}
+
+.emoji {
+    margin-right: 5px;
+}
+
+
