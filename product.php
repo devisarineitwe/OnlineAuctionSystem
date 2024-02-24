@@ -146,7 +146,8 @@ if (isset($_SESSION['user_id'])) {
         $newMessage = $_POST['newMessage'];
         // Validate and sanitize the input (you may add more validation)
         $product_id = filter_var($product_id, FILTER_SANITIZE_NUMBER_INT);
-        $newMessage = filter_var($newMessage, FILTER_SANITIZE_STRING);
+        $newMessage = filter_var($newMessage, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+
 
         // Additional validation if needed
         if (empty($newMessage)) {
