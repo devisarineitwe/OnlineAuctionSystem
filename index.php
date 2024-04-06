@@ -115,11 +115,11 @@ $products = fetchProductsFromDatabase($conn);
                         <!-- Your login form fields go here -->
                         <div class="form-group">
                             <label for="username">Username</label>
-                            <input type="text" class="form-control" id="username" name="username" required>
+                            <input type="text" class="form-control" id="username" name="username" value="Devis" required>
                         </div>
                         <div class="form-group">
                             <label for="password">Password</label>
-                            <input type="password" class="form-control" id="password" name="password" required>
+                            <input type="password" class="form-control" id="password" name="password" value="Deal@2000" required>
                         </div>
                         <button type="submit" class="btn btn-primary" name="loginbtn">Log In</button>
                     </form>

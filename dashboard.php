@@ -189,39 +189,12 @@ $mysqli->close();
         <div class="row">
             <!-- Sidebar -->
             <div class="col-md-3">
-                <div class="sidebar">
-                    <a class="sidebar-link" href="index.php">
-                        <i class="fas fa-home sidebar-icon"></i>
-                        <span>Home</span>
-                    </a>
-                    <a class="sidebar-link" href="products.php">
-                        <i class="fas fa-shopping-cart sidebar-icon"></i>
-                        <span>Products</span>
-                    </a>
-                    <a class="sidebar-link" href="#">
-                        <i class="fas fa-gavel sidebar-icon"></i>
-                        <span>Bids</span>
-                    </a>
-                    <a class="sidebar-link" href="#">
-                        <i class="fas fa-envelope sidebar-icon"></i>
-                        <span>Messages</span>
-                    </a>
-                    <a class="sidebar-link" href="#">
-                        <i class="fas fa-dollar-sign sidebar-icon"></i>
-                        <span>Transactions</span>
-                    </a>
-                    <a class="sidebar-link" href="#">
-                        <i class="fas fa-user sidebar-icon"></i>
-                        <span>Profile</span>
-                    </a>
-                    <a class="sidebar-link" href="#">
-                        <i class="fas fa-sign-out-alt sidebar-icon"></i>
-                        <span>Logout</span>
-                    </a>
-                </div>
-            </div>
-        <!-- Main content -->
-        <div class="col-md-9 main-content">
+                <?php
+                include_once "includes/sidenav.php";
+                ?>
+            </div>            
+            <!-- Main content -->
+            <div class="col-md-9 main-content">
                 <div class="container">
                     <div class="row">
                         <!-- Card 1 -->

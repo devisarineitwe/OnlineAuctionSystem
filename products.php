@@ -66,7 +66,7 @@ $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
                             <a class="nav-link" href="#">Transactions</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Users</a>
+                        <a href="http://localhost/online_auction/user_authentication.php?action=logout" class="list-group-item list-group-item-action">Logout</a>
                         </li>
                     </ul>
                 </div>
@@ -76,13 +76,9 @@ $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
         <div class="row">
             <!-- Create a side navigation bar -->
             <div class="col-md-3">
-                <div class="list-group">
-                    <a href="#" class="list-group-item list-group-item-action active">Dashboard</a>
-                    <a href="#" class="list-group-item list-group-item-action">Products</a>
-                    <a href="#" class="list-group-item list-group-item-action">Bids</a>
-                    <a href="#" class="list-group-item list-group-item-action">Transactions</a>
-                    <a href="#" class="list-group-item list-group-item-action">Users</a>
-                </div>
+                <?php
+                include_once "includes/sidenav.php"
+                ?>
             </div>
             <!-- Create a main content area -->
             <div class="col-md-9">
