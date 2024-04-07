@@ -66,10 +66,7 @@ $mysqli->close();
         }
 
         /* Sidebar */
-        .sidebar {
-            width: 250px;
-            height: 100vh;
-            position: fixed;
+        .sidebar {           
             top: 0;
             left: 0;
             background-color: #f0f0f0;
@@ -95,11 +92,10 @@ $mysqli->close();
         }
 
         /* Main content */
-        .main-content {
-            margin-left: 250px;
-            padding: 20px;
+        .main-container{
+            margin-top: 40px;
         }
-
+       
         .card {
             margin:20px;
             border: none;
@@ -141,51 +137,11 @@ $mysqli->close();
     </style>
 </head>
 <body>
-    <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
-        <div class="container">
-            <div class="container">
-                <a class="navbar-brand" href="#">Auction Dashboard</a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarNav">
-                    <ul class="navbar-nav ml-auto">
-                        <li class="nav-item active">
-                            <a class="nav-link" href="#">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Products</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Bids</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Messages</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Transactions</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Profile</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="user_authentication.php?action=logout">Logout</a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
-        <!-- Sidebar -->
-        <div class="sidebar">
-            <a class="sidebar-link" href="#">
-                <i class="fas fa-home sidebar-icon"></i>
-                <span>Home</span>
-            </a>
-            
-        </div>
+    <?php
+    include "includes/navbar.php";
+    ?>
         <!-- Sidebar and Main content -->
-    <div class="container-fluid">
+    <div class="container-fluid main-container">
         <div class="row">
             <!-- Sidebar -->
             <div class="col-md-3">
@@ -194,7 +150,7 @@ $mysqli->close();
                 ?>
             </div>            
             <!-- Main content -->
-            <div class="col-md-9 main-content">
+            <div class="col-md-8 main-content">
                 <div class="container">
                     <div class="row">
                         <!-- Card 1 -->
@@ -221,7 +177,7 @@ $mysqli->close();
                                     <h1 class="text-center"><?php echo $bids_count?></h1>
                                 </div>
                                 <div class="card-footer">
-                                    <a href="#">View Details</a>
+                                    <a href="bids.php">View Details</a>
                                 </div>
                             </div>
                         </div>
@@ -229,13 +185,13 @@ $mysqli->close();
                         <div class="col-md-6 col-lg-4">
                             <div class="card">
                                 <div class="card-header">
-                                    Total Messages
+                                    Auctions
                                 </div>
                                 <div class="card-body">
                                     <h1 class="text-center"><?php echo $messages_count?></h1>
                                 </div>
                                 <div class="card-footer">
-                                    <a href="#">View Details</a>
+                                    <a href="auctions.php">View Details</a>
                                 </div>
                             </div>
                         </div>

@@ -160,7 +160,9 @@ function deleteMessage($pdo, $messageId) {
 </head>
 
 <body>
-
+    <?php
+include_once "includes/navbar.php";
+?>
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-4">

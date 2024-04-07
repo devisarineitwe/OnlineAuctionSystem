@@ -115,6 +115,7 @@ $conn->close();
     <link rel="stylesheet" href="styles/style.css">
 </head>
 <body>
+    
     <div class="container">
         <h1>Edit Product</h1>
         <form action="edit_product.php?product_id=<?php echo $productData['ProductID']; ?>" method="post" enctype="multipart/form-data">

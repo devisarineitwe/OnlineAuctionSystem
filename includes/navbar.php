@@ -1,3 +1,18 @@
+<style>
+/* Navbar */
+.navbar {
+            background-color: #003366;
+        }
+
+        .navbar-brand {
+            color: white;
+        }
+
+        .nav-link {
+            color: white;
+        }
+
+</style>
 <!-- Navbar -->
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container">
@@ -10,13 +25,16 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item active">
-                    <a class="nav-link" href="#">Home</a>
+                    <a class="nav-link" href="http://localhost/online_auction/index.php?%20message=You%20must%20login%20first&alertClass=alert-danger">Home</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Products</a>
+                    <a class="nav-link" href="http://localhost/online_auction/products.php">Products</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Bids</a>
+                    <a class="nav-link" href="http://localhost/online_auction/auctions.php">Today's Action</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="http://localhost/online_auction/bids.php">Bids</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#">Transactions</a>

@@ -43,35 +43,9 @@ $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/css/bootstrap.min.css">
 </head>
 <body>
-    <div class="container-fluid">
-        <!-- Create a top navigation bar -->
-        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-            <div class="container">
-                <a class="navbar-brand" href="#">Auction Dashboard</a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarNav">
-                    <ul class="navbar-nav ml-auto">
-                        <li class="nav-item active">
-                            <a class="nav-link" href="#">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Products</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Bids</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Transactions</a>
-                        </li>
-                        <li class="nav-item">
-                        <a href="http://localhost/online_auction/user_authentication.php?action=logout" class="list-group-item list-group-item-action">Logout</a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
+<?php
+    include "includes/navbar.php";
+    ?>
         <!-- Create a main content area -->
         <div class="row">
             <!-- Create a side navigation bar -->
@@ -82,11 +56,17 @@ $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
             </div>
             <!-- Create a main content area -->
             <div class="col-md-9">
-                <h1>Dashboard</h1>
-                <!-- Display the data from the Products table using Bootstrap cards -->
+                <div class="container">
+                    
+                <!-- Display a link to view more products -->
+                <a href="upload_product.php" class="btn btn-success">New Product</a>
+
+                <h1 class="mt-4">All Products</h1>
+                
                 <div class="row">
                     <?php
                     // Loop through the products array and display each product as a card
+                    $counter = 0; // Initialize a counter
                     foreach ($products as $product) {
                         // Extract the product data
                         $product_id = $product['ProductID'];
@@ -98,10 +78,15 @@ $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
                         $auction_end_date = $product['AuctionEndDate'];
                         $seller_id = $product['SellerID'];
 
+                        // Check if counter is a multiple of 3
+                        if ($counter % 3 == 0) {
+                            // If it is, start a new row
+                            echo '<div class="row">';
+                        }
                         // Create a card for each product
                         echo "
-                        <div class='col-md-3'>
-                            <div class='card'>
+                        <div class='col-md-4'>
+                            <div class='card mb-4'>
                                 <img src='$image_url' class='card-img-top' alt='$product_name'>
                                 <div class='card-body'>
                                     <h5 class='card-title'>$product_name</h5>
@@ -113,14 +98,22 @@ $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                     <a href='product.php?id=$product_id' class='btn btn-primary'>View Details</a>
                                 </div>
                             </div>
-                        </div>
+                        </div>                        
+
                         ";
-                        
+                        // Increment the counter
+                        $counter++;                       
+                        // Check if counter is a multiple of 3 or it's the last product
+                        if ($counter % 3 == 0 || $counter == count($products)) {
+                            // If it is, end the row
+                            echo '</div>';
+                            echo "<hr class='my-4 bg-primary' style='height: 4px;'>";
+                        }
                     }
                     ?>
                 </div>
-                <!-- Display a link to view more products -->
-                <a href="upload_product.php" class="btn btn-secondary">New Product</a>                
+            </div>
+              
             </div>
         </div>
     </div>
