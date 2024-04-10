@@ -48,8 +48,7 @@ $products = fetchProductsFromDatabase($conn);
     <style>
         /* Add your custom styles here */
         .banner {
-    background-color: #f0f0f0; /* Background color of the banner */
-    padding: 50px; /* Padding around the content */
+     padding: 50px; /* Padding around the content */
     text-align: center; /* Center align text */
 }
 
@@ -67,15 +66,53 @@ $products = fetchProductsFromDatabase($conn);
     font-style: italic; /* Italic style for the subtitle */
 }
 
+.album {
+    display: flex;
+    justify-content: space-between;
+}
+
+.column {
+    flex: 1; /* Makes both columns equal width */
+}
+
+.header-text, .text-content {
+    margin-bottom: 10px; /* Spacing between text and image */
+}
+
+.img-fluid {
+    width: 100%;
+    height: auto;
+    display: block;
+    max-height: 200px; /* Adjust as needed */
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .album {
+        flex-direction: column;
+    }
+}
+
+
     </style>
 </head>
 <body>
-
-<div class="banner">
-        <h1 class="banner-title">Welcome to Online Auction System for Guma Stocks</h1>
-        <p class="banner-description">Your partner in Kabale providing you with quality second-hand products at affordable prices.</p>
-        <p class="banner-subtitle">We are located at Nyerere Avenue, between KABASCO and Little Litz, opposite Hindu temple.</p>
+<div class="container">
+    <div class="row">
+        <div class="col-3 d-flex align-items-center justify-content-center">
+            <img src="images/logo.jpg" alt="Logo" class="img-fluid">
+        </div>
+        <div class="banner bg-primary text-white col-6 d-flex flex-column justify-content-center">
+            <h1 class="banner-title">Welcome to Online Auction System for Guma Stocks</h1>
+            <p class="banner-description">Your partner in Kabale providing you with quality second-hand products at affordable prices.</p>
+            <p class="banner-subtitle">We are located at Nyerere Avenue, between KABASCO and Little Litz, opposite Hindu temple.</p>
+        </div>
+        <div class="col-3 d-flex align-items-center justify-content-center">
+            <img src="images/logo.jpg" alt="" class="img-fluid">
+        </div>
     </div>
+</div>
+
 
 <!-- Display alerts div -->
 <div id="alertDiv" class="mt-3">
@@ -91,24 +128,35 @@ $products = fetchProductsFromDatabase($conn);
     <?php endif; ?>
 </div>
 
-<div class="row product-row">
-    <!-- Static image covering full height -->
-    <div class="col-md-6 mb-4">
-        <img src="images/logo.jpg" class="img-fluid" alt="Static Image" style="max-height: 400px;">
+<div class="album">
+    <!-- Column 1: Single Image with Text -->
+    <div class="column">
+        <div class="header-text">
+            <!-- Add your header text here -->
+            <p>By using this system you will be able to explore products at auction from Guma stocks</p>
+        </div>
+        <img src="images/logo.jpg" alt="Image Description" class="img-fluid">
     </div>
 
-    <!-- Two images sharing height -->
-    <div class="col-md-6">
+    <!-- Column 2: Two Rows with Text and Images -->
+    <div class="column">
         <div class="row">
-            <div class="col-md-12 mb-4">
-                <img src="<?php echo $products[0]['ImageURL']; ?>" class="img-fluid" alt="<?php echo $products[0]['ProductName']; ?>" style="max-height: 200px;">
+            <div class="text-content">
+                <!-- Add your row text here -->
+                <p>You can as well by products using this system</p>
             </div>
-            <div class="col-md-12">
-                <img src="<?php echo $products[1]['ImageURL']; ?>" class="img-fluid" alt="<?php echo $products[1]['ProductName']; ?>" style="max-height: 200px;">
+            <img src="path_to_row_1_image.jpg" alt="Row 1 Image Description" class="img-fluid">
+        </div>
+        <div class="row">
+            <div class="text-content">
+                <!-- Add your row text here -->
+                <p>There is a nice chating platform to negotiate products depending on the available bids</p>
             </div>
+            <img src="path_to_row_2_image.jpg" alt="Row 2 Image Description" class="img-fluid">
         </div>
     </div>
 </div>
+
 
 
 

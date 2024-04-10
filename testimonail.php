@@ -87,7 +87,7 @@ try {
         include_once "includes/sidenav.php";
         ?>
     </div>
-    <div class="col-9 container">
+    <div class="col-8 container">
         <h2>Testimonials</h2>
         <?php
         // Display error message if there's any
@@ -101,9 +101,9 @@ try {
                 <?php if (!empty($testimonials)) : ?>
                     <?php foreach ($testimonials as $key => $testimonial) : ?>
                         <div class="carousel-item <?php echo $key == 0 ? 'active' : ''; ?>">
-                            <div class="testimonial">
-                                <p>"<?php echo $testimonial['TestimonialText']; ?>"</p>
-                                <p class="author text-muted">- <?php echo $testimonial['Username']; ?>, <?php echo $testimonial['SubmissionDate']; ?></p>
+                            <div class="testimonial bg-primary">
+                                <p class="text-white">"<?php echo $testimonial['TestimonialText']; ?>"</p>
+                                <p class="author text-white">- <?php echo $testimonial['Username']; ?>, <?php echo $testimonial['SubmissionDate']; ?></p>
                             </div>
                         </div>
                     <?php endforeach; ?>
@@ -138,6 +138,9 @@ try {
         </form>
     </div>
 </div>
+<?php
+    include_once "includes/footer.php";
+?>
 <!-- Link to Bootstrap JS -->
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>

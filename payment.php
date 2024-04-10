@@ -51,25 +51,30 @@ if (isset($_GET['current_bid']) && isset($_GET['starting_bid']) && $_GET['curren
 <?php include_once "includes/navbar.php";?>
 
 <!-- Payment Form -->
-<div class="container mt-5">
-<div class="alert alert-info" role="alert">
-        <h4 class="mb-0">Hey <span class="text-primary"><?php echo $user['Username']; ?></span> of email <span class="text-primary"><?php echo $user['Email']; ?></span>, you are about to make a payment</h4>
+<div class="row">
+    <div class="col-3">
+        <?php include_once "includes/sidenav.php" ?>
     </div>
-    <div class="alert alert-info" role="alert">
-        Pay the current highest bid of UGX <?php echo $payment_amount; ?>
-    </div>
+    <div class="container mt-5 col-8">
+        <div class="alert alert-info" role="alert">
+            <h4 class="mb-0">Hey <span class="text-primary"><?php echo $user['Username']; ?></span> of email <span class="text-primary"><?php echo $user['Email']; ?></span>, you are about to make a payment</h4>
+        </div>
+        <div class="alert alert-info" role="alert">
+            Pay the current highest bid of UGX <?php echo $payment_amount; ?>
+        </div>
 
-    <form method="POST" action="https://checkout.flutterwave.com/v3/hosted/pay">
-        <input type="hidden" name="public_key" value="FLWPUBK_TEST-02b9b5fc6406bd4a41c3ff141cc45e93-X" />
-        <input type="hidden" name="customer[email]" value="<?php echo $user['Email']; ?>" />
-        <input type="hidden" name="customer[name]" value="<?php echo $user['Username']; ?>" />
-        <input type="hidden" name="tx_ref" value="txref-81123" />
-        <input type="hidden" name="redirect_url" value="https://www.kab.ac.ug/" />
-        <input type="hidden" name="amount" value="<?php echo $payment_amount; ?>" />
-        <input type="hidden" name="currency" value="UGX" />
-        <input type="hidden" name="meta[source]" value="docs-html-test" />
-        <button type="submit" class="btn btn-primary">Pay Now</button>
-    </form>
+        <form method="POST" action="https://checkout.flutterwave.com/v3/hosted/pay">
+            <input type="hidden" name="public_key" value="FLWPUBK_TEST-02b9b5fc6406bd4a41c3ff141cc45e93-X" />
+            <input type="hidden" name="customer[email]" value="<?php echo $user['Email']; ?>" />
+            <input type="hidden" name="customer[name]" value="<?php echo $user['Username']; ?>" />
+            <input type="hidden" name="tx_ref" value="txref-81123" />
+            <input type="hidden" name="redirect_url" value="https://www.kab.ac.ug/" />
+            <input type="hidden" name="amount" value="<?php echo $payment_amount; ?>" />
+            <input type="hidden" name="currency" value="UGX" />
+            <input type="hidden" name="meta[source]" value="docs-html-test" />
+            <button type="submit" class="btn btn-primary">Pay Now</button>
+        </form>
+    </div>
 </div>
 <?php
     include_once "includes/footer.php";

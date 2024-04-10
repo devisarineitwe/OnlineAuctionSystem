@@ -237,28 +237,7 @@ $mysqli->close();
                                 </div>
                             </div>
                         </div>
-                        <!-- Chart 1 -->
-                        <div class="col-md-12 col-lg-6">
-                            <div class="card">
-                                <div class="card-header">
-                                    Products by Category
-                                </div>
-                                <div class="card-body">
-                                    <div id="chart1" class="chart"></div>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Chart 2 -->
-                        <div class="col-md-12 col-lg-6">
-                            <div class="card">
-                                <div class="card-header">
-                                    Bids by Time
-                                </div>
-                                <div class="card-body">
-                                    <div id="chart2" class="chart"></div>
-                                </div>
-                            </div>
-                        </div>
+                       
                     </div>
                 </div>
             </div>
