@@ -173,7 +173,7 @@ include_once "includes/navbar.php";
                 <div class="row">
                     <div class='product-item'>
                         <div class='row'>
-                            <a href="upload_product.php">New product</a>
+                            <a class=" container p-3 y-3 btn btn-info" href="products.php">Other Products</a>
                             <div class='col-md-6'>
                                 <img class='card-img-top' src='<?php echo $image_url; ?>' alt='<?php echo $product_name; ?>'>
                             </div>
@@ -183,13 +183,15 @@ include_once "includes/navbar.php";
                                     <div class='product-price'>Starting Price: <?php echo $starting_price; ?></div>
                                     <div class='product-price'>Current Bid: <?php echo $current_bid; ?></div>
                                     <div class='product-description'><?php echo $description; ?></div>
-                                    <div class='product-description'><a class="btn-primary" href="payment.php">Make Payment</a></div>
+                                    <br><br><br>
+                                    <div class='product-description'>
+                                        <a class="p-3 text-white mb-2 bg-warning text-dark" href="payment.php?current_bid=<?php echo $current_bid;?>&starting_bid=<?php echo $starting_price;?>">Make Payment</a></div>
                                 </div>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-md-12">
-                                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#chatModal">
+                                <button type="button" class="container p-3 my-3 bg-dark text-white" data-toggle="modal" data-target="#chatModal">
                                     Open Product Chat
                                 </button>
                                 <?php
@@ -299,18 +301,21 @@ include_once "includes/navbar.php";
                     ?>
                 </div>
                 <div class="modal-footer">
-                <form method="post" action="" id="message-form" onsubmit="return postMessage();">
+                <form method="post" action="" id="message-form" onsubmit="return postMessage(<?php echo $product_id; ?>);">
                         <input type="hidden" name="product_id" value="<?php echo $product_id; ?>">
                         <div class="form-group">
                             <label for="newMessage">New Message:</label>
                             <input type="text" class="form-control" id="newMessage" name="newMessage" required>
                         </div>
-                        <button type="button" onclick="postMessage()" class="btn btn-primary">Post Message</button>
+                        <button type="submit" class="btn btn-primary">Post Message</button>
                     </form>
                 </div>
             </div>
         </div>
     </div>
+    <?php
+    include_once "includes/footer.php";
+?>
 
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/js/bootstrap.bundle.min.js"></script>
@@ -319,7 +324,6 @@ include_once "includes/navbar.php";
 function updateChatMessages() {
     // Get the product ID
     var productId = <?php echo $product_id; ?>;
-
     // Send AJAX request
     $.ajax({
         url: 'update_messages.php', // Change the URL to 'update_messages.php'
@@ -357,30 +361,39 @@ function deleteMessage(messageID) {
     }
 
 
-// submitting the messate form
-function postMessage() {
-        // Get the form data
-        var formData = $('#message-form').serialize();
+// submitting the message form
+function postMessage(productId) {
+    // Get the form data
+    var formData = $('#message-form').serialize();
+    console.log("we are saving message for product:", productId);
+    
+    // Append productId to formData
+    formData += '&productId=' + productId;
 
-        // Send AJAX request to save the message
-        $.ajax({
-            url: 'product.php', // Update the URL to the correct file
-            method: 'POST',
-            data: formData,
-            success: function (data) {
-                // Handle success, maybe update the chat messages after saving
-                console.log('Message saved successfully:', data);
-                updateChatMessages();
-            },
-            error: function (xhr, status, error) {
-                // Handle error
-                console.error('Error during message saving:', xhr.responseText);
-            }
-        });
+    // Add the post_message parameter
+    formData += '&post_message=1'; // or any value you want to send
 
-        // Prevent the default form submission
-        return false;
-    }
+    // Send AJAX request to save the message
+    $.ajax({
+        url: 'post_message.php', // Update the URL to the correct file
+        method: 'POST',
+        data: formData,
+        success: function (data) {
+            // Handle success, maybe update the chat messages after saving
+            console.log('Message saved successfully:', data);
+            updateChatMessages();
+        },
+        error: function (xhr, status, error) {
+            // Handle error
+            console.error('Error during message saving:', xhr.responseText);
+        }
+    });
+
+    // Prevent the default form submission
+    return false;
+}
+
+
 
     </script>
 

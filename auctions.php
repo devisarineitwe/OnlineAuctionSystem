@@ -36,7 +36,14 @@
 <?php
 include_once "includes/navbar.php";
 ?>
-<div class="container mt-4">
+
+<div class="row">
+<div class="col-3">
+<?php
+include_once "includes/sidenav.php";
+?>
+</div>
+<div class="container mt-4 col-9">
     <h1>All Auctions</h1>
     <div class="row" id="auctions-list">
         <?php
@@ -75,7 +82,11 @@ include_once "includes/navbar.php";
 }        ?>
     </div>    
 </div>
-
+    
+</div>
+<?php
+    include_once "includes/footer.php";
+?>
 <!-- Bootstrap JS and jQuery -->
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>

@@ -111,7 +111,7 @@ else if (isset($_POST["loginbtn"])) {
 
 // logout section of this page
 if(isset($_GET['action']) && $_GET['action'] == 'logout') {
-    echo "we are logging out the user";
+    // echo "we are logging out the user";
     // Unset all session variables
     $_SESSION = array();
 

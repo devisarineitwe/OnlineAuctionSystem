@@ -71,8 +71,16 @@ try {
     </style>
 </head>
 <body>
-
-<div class="container">
+<?php
+include_once "includes/navbar.php"
+?>
+<div class="row">
+    <div class="col-3">
+        <?php
+        include_once "includes/sidenav.php";
+        ?>
+    </div>
+<div class="container col-9">
     <h1 class="mt-4">All Bids</h1>
     
     <!-- Search Section -->
@@ -125,7 +133,10 @@ try {
         </table>
     </div>
 </div>
-
+</div>
+<?php
+    include_once "includes/footer.php";
+?>
 <!-- Bootstrap JS and jQuery -->
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>

@@ -47,9 +47,35 @@ $products = fetchProductsFromDatabase($conn);
     <!-- Custom styles -->
     <style>
         /* Add your custom styles here */
+        .banner {
+    background-color: #f0f0f0; /* Background color of the banner */
+    padding: 50px; /* Padding around the content */
+    text-align: center; /* Center align text */
+}
+
+.banner-title {
+    font-size: 36px; /* Font size of the title */
+    margin-bottom: 20px; /* Bottom margin for spacing */
+}
+
+.banner-description {
+    font-size: 18px; /* Font size of the description */
+    margin-bottom: 20px; /* Bottom margin for spacing */
+}
+
+.banner-subtitle {
+    font-style: italic; /* Italic style for the subtitle */
+}
+
     </style>
 </head>
 <body>
+
+<div class="banner">
+        <h1 class="banner-title">Welcome to Online Auction System for Guma Stocks</h1>
+        <p class="banner-description">Your partner in Kabale providing you with quality second-hand products at affordable prices.</p>
+        <p class="banner-subtitle">We are located at Nyerere Avenue, between KABASCO and Little Litz, opposite Hindu temple.</p>
+    </div>
 
 <!-- Display alerts div -->
 <div id="alertDiv" class="mt-3">
@@ -65,22 +91,26 @@ $products = fetchProductsFromDatabase($conn);
     <?php endif; ?>
 </div>
 
-<div class="container mt-5">
-    <h1 class="mb-4">Welcome to the Online Auction System</h1>
-
-    <div class="row product-row">
-        <?php foreach ($products as $product) : ?>
-            <div class="col-md-6 mb-4 product-card">
-                <div class="card">
-                <img src="<?php echo $product['ImageURL']; ?>" class="card-img-top" alt="<?php echo $product['ProductName']; ?>">
-                    <div class="card-body">
-                        <h5 class="card-title"><?php echo $product['ProductName']; ?></h5>
-                        <p class="card-text"><?php echo $product['Description']; ?></p>
-                    </div>
-                </div>
-            </div>
-        <?php endforeach; ?>
+<div class="row product-row">
+    <!-- Static image covering full height -->
+    <div class="col-md-6 mb-4">
+        <img src="images/logo.jpg" class="img-fluid" alt="Static Image" style="max-height: 400px;">
     </div>
+
+    <!-- Two images sharing height -->
+    <div class="col-md-6">
+        <div class="row">
+            <div class="col-md-12 mb-4">
+                <img src="<?php echo $products[0]['ImageURL']; ?>" class="img-fluid" alt="<?php echo $products[0]['ProductName']; ?>" style="max-height: 200px;">
+            </div>
+            <div class="col-md-12">
+                <img src="<?php echo $products[1]['ImageURL']; ?>" class="img-fluid" alt="<?php echo $products[1]['ProductName']; ?>" style="max-height: 200px;">
+            </div>
+        </div>
+    </div>
+</div>
+
+
 
     <div class="text-center mt-4">
         <?php if (isset($_SESSION['user_id'])){?>
@@ -160,6 +190,7 @@ $products = fetchProductsFromDatabase($conn);
                             <label for="register-email">Email</label>
                             <input type="email" class="form-control" id="register-email" name="email" required>
                         </div>
+                        <p>by clicking <span class="text-primary">Register</span> then you have agreed by all <a href="http://localhost/online_auction/user_terms.php#terms-and-conditions">Terms and Conditions</a> of our service</p>
                         <button type="submit" class="btn btn-primary" name="registerbtn">Register</button>
                     </form>
                     <p class="text-center">Already have an account? <a href="#" onclick="showLoginModal()">Log In</a></p>

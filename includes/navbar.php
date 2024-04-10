@@ -17,7 +17,7 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container">
         <a class="navbar-brand" href="http://localhost/online_auction/index.php">
-            <img src="images/logo.png" alt="Logo" width="200" height="70" class="d-inline-block align-top">
+            <img src="images/logo.jpg" alt="Logo" width="50" height="50" class="d-inline-block align-top">
             Auction Dashboard</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -40,7 +40,7 @@
                     <a class="nav-link" href="#">Transactions</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Users</a>
+                    <a class="nav-link" href="http://localhost/online_auction/user_authentication.php?action=logout">Logout</a>
                 </li>
             </ul>
         </div>

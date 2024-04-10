@@ -1,11 +1,3 @@
-.product-row{
-    background-color: aquamarine;
-    justify-content: space-around;
-    display:flex;
-}
-.product-card{
-    height:50%;
-}
 
 /* Define the color variables */
 :root {

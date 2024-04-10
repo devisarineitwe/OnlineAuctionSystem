@@ -13,7 +13,7 @@ try {
     $pdo = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);
     // Set the PDO error mode to exception
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    echo "Connected successfully";
+    // echo "Connected successfully";
 } catch(PDOException $e) {
     echo "Connection failed: " . $e->getMessage();
 }
@@ -117,6 +117,9 @@ $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
             </div>
         </div>
     </div>
+    <?php
+    include_once "includes/footer.php";
+?>
     <!-- Include Bootstrap 5 JS and Popper.js files from CDN -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/js/bootstrap.bundle.min.js"></script>
