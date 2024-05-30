@@ -1,7 +1,11 @@
 <?php
 include 'includes/navbar.php';
-session_start(); 
-
+session_start();
+if(!$_SESSION['role']=='admin'){
+    $message="you are not allowed to upload products";
+    header("Location: index.php?message=$message&alertClass=alert-danger");
+    exit();
+} 
 if(isset($_POST["add_product"])){ 
 // Define your database parameters
 $host = "localhost";
@@ -104,42 +108,6 @@ $conn->close();
 ?>
 <html>
 <head>
-    <style>
-        body {
-            background-color: white;
-            font-family: Arial, sans-serif;
-        }
-
-        h1 {
-            color: blue;
-            text-align: center;
-        }
-
-        form {
-            margin: 20px auto;
-            width: 80%;
-            border: 2px solid blue;
-            padding: 10px;
-        }
-
-        label {
-            display: block;
-            margin: 10px 0;
-        }
-
-        input, textarea, select {
-            width: 90%;
-            font-size: 16px;
-        }
-
-        input[type="submit"] {
-            background-color: deepyellow;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            cursor: pointer;
-        }
-    </style>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/css/bootstrap.min.css">
 </head>
 <body>    
@@ -147,10 +115,10 @@ $conn->close();
     <div class="row">
         <div class="col-3">
             <?php
-            include_once "includes/sidenav.php"
+            include_once "includes/sidenav.php";
             ?>
         </div>
-    <div class="container col-9">
+    <div class="container col-8">
         <h1>Upload Product</h1>
         <form action="upload_product.php" method="post" enctype="multipart/form-data">
             <!-- Use the form-group and form-control classes for each input field -->

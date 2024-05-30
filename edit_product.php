@@ -68,55 +68,18 @@ $conn->close();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit Product</title>
-    <style>
-        body {
-            background-color: white;
-            font-family: Arial, sans-serif;
-        }
-
-        h1 {
-            color: blue;
-            text-align: center;
-        }
-
-        form {
-            margin: 20px auto;
-            width: 80%;
-            border: 2px solid blue;
-            padding: 10px;
-        }
-
-        .form-group {
-            margin-bottom: 15px;
-        }
-
-        label {
-            display: block;
-            margin-bottom: 5px;
-        }
-
-        input, textarea, select {
-            width: 100%;
-            font-size: 16px;
-            padding: 8px;
-            box-sizing: border-box;
-        }
-
-        input[type="submit"] {
-            background-color: deepyellow;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            cursor: pointer;
-        }
-    </style>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/css/bootstrap.min.css">
     <!-- Include your custom style file -->
     <link rel="stylesheet" href="styles/style.css">
 </head>
 <body>
-    
-    <div class="container">
+<div class="row">
+    <div class="col-4">
+        <?php
+        include_once "includes/sidenav.php";
+        ?>
+    </div>
+    <div class="container col-7">
         <h1>Edit Product</h1>
         <form action="edit_product.php?product_id=<?php echo $productData['ProductID']; ?>" method="post" enctype="multipart/form-data">
             <input type="hidden" name="product_id" value="<?php echo $productData['ProductID']; ?>">
@@ -151,6 +114,7 @@ $conn->close();
             <input type="submit" name="update_product" value="Update" class="btn btn-primary">
         </form>
     </div>
+</div>
 </body>
 <!-- Include Bootstrap 5 JS and Popper.js files from CDN -->
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>

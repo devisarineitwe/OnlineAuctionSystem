@@ -1,5 +1,4 @@
 <?php
-session_start();
 // Include your database connection code here
 // Database connection parameters
 $host = "localhost";
@@ -39,9 +38,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Check if the username is available
     if (isUsernameAvailable($conn, $username)) {
         // Perform the user registration
-        $query = "INSERT INTO Users (Username, Password, Email, FullName) VALUES (?, ?, ?, ?)";
+        $query = "INSERT INTO Users (Username, Password, Email, FullName, is_admin) VALUES (?, ?, ?, ?, ?)";
         $stmt = $conn->prepare($query);
-        $stmt->bind_param("ssss", $username, $password, $email, $fullname);
+        $is_admin = 0; // Use 1 for admin and 0 for regular user
+        $stmt->bind_param("ssssi", $username, $password, $email, $fullname, $is_admin);
 
         if ($stmt->execute()) {
             $alertClass = "alert-success";
@@ -59,13 +59,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
      header("Location: index.php?message=$message&alertClass=$alertClass");
      exit();
 
-}
+}}
+
 // Check if the login form is submitted
-else if (isset($_POST["loginbtn"])) {
+if (isset($_POST["loginbtn"])) {
     // Retrieve user input from the login form
     $username = $_POST["username"];
     $password = $_POST["password"];
-
+    $user_type = $_POST["user_type"];
+    
     // Check if the entered username exists
     $query = "SELECT * FROM Users WHERE Username = ?";
     $stmt = $conn->prepare($query);
@@ -76,19 +78,16 @@ else if (isset($_POST["loginbtn"])) {
     if ($result->num_rows > 0) {
         // User exists, verify the password
         $row = $result->fetch_assoc();
-        if ($password == $row["Password"]) {
+        if ($password == $row["Password"]) { // You should hash and verify passwords securely
             // Password is correct, create a session
             session_start();
             $_SESSION["user_id"] = $row["UserID"];
             $_SESSION["username"] = $row["Username"];
             $_SESSION["email"] = $row["Email"];
             $_SESSION["fullname"] = $row["FullName"];
+            $_SESSION["role"] = $row["is_admin"] == 1 ? "admin" : "user";
 
-            // Set success message
-            $message = urlencode("Login successful!");
-            $alertClass = "alert-success";
-
-            // Redirect to another page with the message in the URL
+            // Redirect to dashboard
             header("Location: dashboard.php");
             exit();
         } else {
@@ -102,16 +101,17 @@ else if (isset($_POST["loginbtn"])) {
         $alertClass = "alert-danger";
     }
 
-    // Redirect to another page with the message in the URL
+    // Redirect to login page with the message in the URL
     header("Location: index.php?message=$message&alertClass=$alertClass");
     exit();
 }
 
-}
-
+// logout section of this page
 // logout section of this page
 if(isset($_GET['action']) && $_GET['action'] == 'logout') {
-    // echo "we are logging out the user";
+    // Initialize the session if not already done
+    session_start();
+
     // Unset all session variables
     $_SESSION = array();
 

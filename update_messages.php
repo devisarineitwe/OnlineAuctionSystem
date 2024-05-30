@@ -1,9 +1,6 @@
 <?php
 include_once 'includes/sessions.php';
 include_once 'includes/database.php'; // Include your database connection code
-
-
-
 function fetchMessages($pdo, $productID)
 {
     $sql = "SELECT * FROM Messages WHERE ProductID = :productID";

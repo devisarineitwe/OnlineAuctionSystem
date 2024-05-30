@@ -39,9 +39,23 @@
                 <li class="nav-item">
                     <a class="nav-link" href="#">Transactions</a>
                 </li>
+                <?php 
+                if(isset($_SESSION['user_id'])){
+                    if(isset($_SESSION['username'])){
+                ?>
+                <li class="nav-item">
+                    <a class="nav-link" href="#"><?php  echo $_SESSION['username']; ?></a>
+                </li>
+                <?php }else{
+                    echo "No username found";
+                } ?>
                 <li class="nav-item">
                     <a class="nav-link" href="http://localhost/online_auction/user_authentication.php?action=logout">Logout</a>
                 </li>
+                <?php }else{
+                    echo "you are not logged in";
+                } 
+                ?>
             </ul>
         </div>
     </div>

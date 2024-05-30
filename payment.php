@@ -20,14 +20,14 @@ $stmt->execute([$user_id]);
 $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
 // Check if both current_bid and starting_bid are set and greater than or equal to 0
-if (isset($_GET['current_bid']) && isset($_GET['starting_bid']) && $_GET['current_bid'] >= 0 && $_GET['starting_bid'] >= 0) {
+if (isset($_GET['current_bid']) && isset($_GET['starting_bid']) && $_GET['current_bid'] > 0 && $_GET['starting_bid'] >= 0) {
     // Calculate the payment amount (current_bid + 20% of starting_bid)
     $current_bid = $_GET['current_bid'];
     $starting_bid = $_GET['starting_bid'];
     $payment_amount = $current_bid + 0.2 * $starting_bid;
 } else {
     // Use the present bid amount + 20% of the present bid amount
-    $current_bid = isset($_GET['current_bid']) ? $_GET['current_bid'] : 0;
+    $current_bid = isset($_GET['starting_bid']) ? $_GET['starting_bid'] : 0;
     $payment_amount = $current_bid + 0.2 * $current_bid;
 }
 ?>
